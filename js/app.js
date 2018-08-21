@@ -43,38 +43,66 @@ function getCurrentDisplay() {
     allProducts[randomProductNumber].views++;
   }
 
-
+  // Load Product One
   imageOneEl.src = allProducts[currentProductsDisplayed[0]].path;
   imageOneEl.title = allProducts[currentProductsDisplayed[0]].name;
   imageOneEl.alt = allProducts[currentProductsDisplayed[0]].name;
 
-
+  // Load Product Two
   imageTwoEl.src = allProducts[currentProductsDisplayed[1]].path;
   imageTwoEl.title = allProducts[currentProductsDisplayed[1]].name;
   imageTwoEl.alt = allProducts[currentProductsDisplayed[1]].name;
 
-
+  // Load Product Three
   imageThreeEl.src = allProducts[currentProductsDisplayed[2]].path;
   imageThreeEl.title = allProducts[currentProductsDisplayed[2]].name;
   imageThreeEl.alt = allProducts[currentProductsDisplayed[2]].name;
 
-  previousProductsDisplayed.length = 0;
-
-  previousProductsDisplayed = currentProductsDisplayed.slice();
-
-  currentProductsDisplayed.length = 0;
+  // Prepare for next set of products
+  // previousProductsDisplayed.length = 0;
+  // previousProductsDisplayed = currentProductsDisplayed.slice();
+  // currentProductsDisplayed.length = 0;
 }
+
+// Load first set of product pictures
+getCurrentDisplay();
+
+// CheckforClicks();
 var testLength = 1;
-// getCurrentDisplay();
 
-while (testLength <= 25) {
-  imageOneEl.addEventListener('click', function (event) {
-    // allProducts[].clicks++;
-    console.log(event.target);
+// Listen for a click on picture one
+imageOneEl.addEventListener('click', function (event) {
+  processClicks(event, 0);
+});
+
+imageTwoEl.addEventListener('click', function (event) {
+  processClicks(event, 1);
+});
+
+imageThreeEl.addEventListener('click', function (event) {
+  processClicks(event, 2);
+});
+
+function processClicks(event, productPosition) {
+
+  // *** WORK IN PROGRESS ***
+  // console.log(`ImageThree-${event.target.title}`);
+  // var title = event.target.title;
+  // console.log(title);
+  // *************************
+
+  var pos = currentProductsDisplayed[productPosition];
+  allProducts[pos].clicks++;
+
+  // Check for end of survey
+  if (testLength < 25) {
     testLength++;
+    previousProductsDisplayed.length = 0;
+    previousProductsDisplayed = currentProductsDisplayed.slice();
+    currentProductsDisplayed.length = 0;
     getCurrentDisplay(event);
-  });
-
-
+  }
+  else {
+    alert('All Done');
+  }
 }
-
