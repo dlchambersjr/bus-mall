@@ -84,6 +84,7 @@ imageThreeEl.addEventListener('click', function (event) {
 });
 
 function processClicks(event, productPosition) {
+  event.preventDefault(); //prevent reload
 
   // *** WORK IN PROGRESS ***
   // console.log(`ImageThree-${event.target.title}`);
@@ -104,5 +105,22 @@ function processClicks(event, productPosition) {
   }
   else {
     alert('All Done');
+    // imageOneEl.removeEventListener('click', function());
+    // imageTwoEl.removeEventListener('click');
+    // imageThreeEl.removeEventListener('click');
+    renderResults();
   }
 }
+
+
+function renderResults() {
+  var bodyEl = document.getElementById('body');
+  var ulEl = document.createElement('ul');
+  for (var position = 0; position < allProducts.length; position++) {
+    var liEl = document.createElement('li');
+    liEl.textContent = `${allProducts[position].clicks} for the ${allProducts[position].name}`;
+    ulEl.appendChild(liEl);
+  }
+  bodyEl.appendChild(ulEl);
+}
+
