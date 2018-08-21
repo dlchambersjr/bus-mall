@@ -10,6 +10,7 @@ var currentProductsDisplayed = [];
 var previousProductsDisplayed = [];
 
 var maxChoices = 25;
+var resultsChart;
 
 //Create the product list
 
@@ -74,9 +75,7 @@ var testLength = 1;
 
 // Listen for a click on picture one
 imageOneEl.addEventListener('click', processClicks);
-
 imageTwoEl.addEventListener('click', processClicks);
-
 imageThreeEl.addEventListener('click', processClicks);
 
 
@@ -102,6 +101,7 @@ function processClicks(event) {
     imageThreeEl.removeEventListener('click', processClicks);
     // renderResults();
     updateArraysForChart();
+    drawResultsChart();
   }
 }
 
@@ -121,12 +121,13 @@ var productName = [];
 var productClicks = [];
 var dataColors = [];
 
-dataColors = (function () {
+(function populateColors() {
   for (var numberOfProducts = 0; numberOfProducts < allProducts.length; numberOfProducts++) {
     console.log(Math.floor(Math.random() * 16777215).toString(16));
     dataColors[numberOfProducts] = (`#${Math.floor(Math.random() * 16777215).toString(16)}`);
   }
 })();
+
 
 console.log(dataColors);
 
@@ -139,12 +140,37 @@ function updateArraysForChart() {
 
 // // Chart rendered with chartData.js
 
-// var chartData {
-//   label: productName,
-//   datasets: [{ productClicks,
-//     backgoundColor: dataColors,
-//     hoverBackgroundColors: dataColors.reversed();
-//   ];
+var chartData = {
+  label: productName,
+  datasets: [{
+    data: productClicks,
+    // backgoundColor: dataColors,
+    // hoverBackgroundColors: dataColors
+  }]
+};
 
+function drawResultsChart() {
+  var ctx = document.getElementById('product-results-chart').getContext('2d');
+  resultsChart = new Chart(ctx, {
+    type: 'bar',
+    data: chartData,
+    options: {
+      responsive: false,
+      animation: {
+        duration: 1000,
+        // easing: 'easeOutBounce'
+      }
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          max: 10,
+          min: 0,
+          stepSize: 1.0
+        }
+      }]
+    }
+  });
+  // chartDrawn = true;
+}
 
-// }
