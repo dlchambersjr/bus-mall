@@ -67,32 +67,22 @@ function getCurrentDisplay() {
 // Load first set of product pictures
 getCurrentDisplay();
 
-// CheckforClicks();
+// Handle and process clicks
 var testLength = 1;
 
 // Listen for a click on picture one
-imageOneEl.addEventListener('click', function (event) {
-  processClicks(event, 0);
-});
+imageOneEl.addEventListener('click', processClicks);
 
-imageTwoEl.addEventListener('click', function (event) {
-  processClicks(event, 1);
-});
+imageTwoEl.addEventListener('click', processClicks);
 
-imageThreeEl.addEventListener('click', function (event) {
-  processClicks(event, 2);
-});
+imageThreeEl.addEventListener('click', processClicks);
 
-function processClicks(event, productPosition) {
+
+function processClicks(event) {
   event.preventDefault(); //prevent reload
 
-  // *** WORK IN PROGRESS ***
-  // console.log(`ImageThree-${event.target.title}`);
-  // var title = event.target.title;
-  // console.log(title);
-  // *************************
-
-  var pos = currentProductsDisplayed[productPosition];
+  var title = event.target.title;
+  var pos = productList.indexOf(title);
   allProducts[pos].clicks++;
 
   // Check for end of survey
@@ -105,20 +95,19 @@ function processClicks(event, productPosition) {
   }
   else {
     alert('All Done');
-    // imageOneEl.removeEventListener('click', function());
-    // imageTwoEl.removeEventListener('click');
-    // imageThreeEl.removeEventListener('click');
+    imageOneEl.removeEventListener('click', processClicks);
+    imageTwoEl.removeEventListener('click', processClicks);
+    imageThreeEl.removeEventListener('click', processClicks);
     renderResults();
   }
 }
 
-
 function renderResults() {
   var bodyEl = document.getElementById('body');
   var ulEl = document.createElement('ul');
-  for (var position = 0; position < allProducts.length; position++) {
+  for (var productId = 0; productId < allProducts.length; productId++) {
     var liEl = document.createElement('li');
-    liEl.textContent = `${allProducts[position].clicks} for the ${allProducts[position].name}`;
+    liEl.textContent = `${allProducts[productId].clicks} for the ${allProducts[productId].name}`;
     ulEl.appendChild(liEl);
   }
   bodyEl.appendChild(ulEl);
