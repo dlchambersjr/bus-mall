@@ -1,0 +1,18 @@
+
+
+
+
+main ul {
+    list-style: none
+}
+
+main li {
+    display: inline-block;
+    margin: 25px;
+}
+
+main img {
+    width: 200px;
+    height: 200px;
+    object-fit: scale-down;
+}
