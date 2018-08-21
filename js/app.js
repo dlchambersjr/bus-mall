@@ -9,6 +9,8 @@ var
 var currentProductsDisplayed = [];
 var previousProductsDisplayed = [];
 
+var maxChoices = 25;
+
 //Create the product list
 
 var productList = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
@@ -86,7 +88,7 @@ function processClicks(event) {
   allProducts[pos].clicks++;
 
   // Check for end of survey
-  if (testLength < 25) {
+  if (testLength < maxChoices) {
     testLength++;
     previousProductsDisplayed.length = 0;
     previousProductsDisplayed = currentProductsDisplayed.slice();
@@ -98,7 +100,8 @@ function processClicks(event) {
     imageOneEl.removeEventListener('click', processClicks);
     imageTwoEl.removeEventListener('click', processClicks);
     imageThreeEl.removeEventListener('click', processClicks);
-    renderResults();
+    // renderResults();
+    updateArraysForChart();
   }
 }
 
@@ -113,3 +116,35 @@ function renderResults() {
   bodyEl.appendChild(ulEl);
 }
 
+// Create the arrays to send to the chart
+var productName = [];
+var productClicks = [];
+var dataColors = [];
+
+dataColors = (function () {
+  for (var numberOfProducts = 0; numberOfProducts < allProducts.length; numberOfProducts++) {
+    console.log(Math.floor(Math.random() * 16777215).toString(16));
+    dataColors[numberOfProducts] = (`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+  }
+})();
+
+console.log(dataColors);
+
+function updateArraysForChart() {
+  for (var listOfProducts = 0; listOfProducts < allProducts.length; listOfProducts++) {
+    productName[listOfProducts] = allProducts[listOfProducts].name;
+    productClicks[listOfProducts] = allProducts[listOfProducts].clicks;
+  }
+}
+
+// // Chart rendered with chartData.js
+
+// var chartData {
+//   label: productName,
+//   datasets: [{ productClicks,
+//     backgoundColor: dataColors,
+//     hoverBackgroundColors: dataColors.reversed();
+//   ];
+
+
+// }
