@@ -9,3 +9,4 @@ CF 201 Week 3
  - created eventListeners for clicks
  - created the render process for the data.
  
+ ## Tuesday
