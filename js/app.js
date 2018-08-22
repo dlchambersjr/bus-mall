@@ -9,7 +9,7 @@ var
 var currentProductsDisplayed = [];
 var previousProductsDisplayed = [];
 
-var maxChoices = 5;
+var maxChoices = 25;
 // var resultsChart;
 
 //Create the product list
@@ -150,7 +150,7 @@ function updateArraysForChart() {
 
 function drawResultsChart() {
   var ctx = document.getElementById('product-results-chart').getContext('2d');
-  var resultsChart = new Chart(ctx, {
+  var resultsChart = new Chart(ctx, { // eslint-disable-line
     type: 'bar',
     data: {
       labels: productList,
@@ -165,6 +165,14 @@ function drawResultsChart() {
       }]
     },
     options: {
+      title: {
+        display: true,
+        text: 'Product Preferences'
+      },
+      responsive: false,
+      animation: {
+        duration: 6000
+      },
       scales: {
         yAxes: [{
           ticks: {
