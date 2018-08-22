@@ -11,6 +11,10 @@ var SURVEY_STATUS = 'surveyStatus';
 var SELECTION_NUMBER = 'selectionCount';
 var ALL_PRODUCTS = 'allProducts';
 var selectionCount;
+var storedProducts;
+var productName = [];
+var productClicks = [];
+var dataColors = [];
 
 //Create the product list
 var productList = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
@@ -25,7 +29,7 @@ if (surveyStatus === null) {
 } else if (surveyStatus === 'started') {
   // continiue the survey where they left off
 } else {
-  displaySurveyReults();
+  displaySurveyResults();
 }
 
 // Create required number of image elements
@@ -119,35 +123,30 @@ function processClicks(event) {
     updateHtmlImgTags();
   }
   else {
-    writeStorage('finshed', selectionCount, allProducts);
+    writeStorage('finished', selectionCount, allProducts);
     alert('You have completed the survey.\n\nplease click "OK" to see the results');
     toggleListenerOff();
-    updateArraysForChart();
+    // updateArraysForChart();
     drawResultsChart();
   }
 }
 
 // Create the arrays to send to the chart
-var productName = [];
-var productClicks = [];
-var dataColors = [];
 
-function updateArraysForChart() {
-  for (var listOfProducts = 0; listOfProducts < allProducts.length; listOfProducts++) {
-    productName[listOfProducts] = allProducts[listOfProducts].name;
-    productClicks[listOfProducts] = allProducts[listOfProducts].clicks;
-  }
-}
+
 
 // Generate random colors for the bars in graph
-(function populateColors() {
+function populateColors() {
   for (var numberOfProducts = 0; numberOfProducts < allProducts.length; numberOfProducts++) {
     dataColors[numberOfProducts] = (`#${Math.floor(Math.random() * 16777215).toString(16)} `);
   }
-})();
+}
 
 // Render the chart
 function drawResultsChart() {
+  updateArraysForChart();
+  populateColors();
+
   var ctx = document.getElementById('product-results-chart').getContext('2d');
   var resultsChart = new Chart(ctx, { // eslint-disable-line
     type: 'bar',
@@ -188,6 +187,30 @@ function writeStorage(surveyStatus, selectionCount) {
   localStorage.setItem(ALL_PRODUCTS, JSON.stringify(allProducts));
 }
 
+// Read data from local storage and place into proper variables
+function readStorage() {
+  surveyStatus = localStorage.getItem(SURVEY_STATUS);
+  selectionCount = JSON.parse(localStorage.getItem(SELECTION_NUMBER));
+  storedProducts = JSON.parse(localStorage.getItem(ALL_PRODUCTS));
+
+  console.log(storedProducts);
+
+  (function restoreProducts() {
+    allProducts = storedProducts;
+  })();
+
+}
+
+function updateArraysForChart() {
+  for (var listOfProducts = 0; listOfProducts < allProducts.length; listOfProducts++) {
+    productName[listOfProducts] = allProducts[listOfProducts].name;
+    productClicks[listOfProducts] = allProducts[listOfProducts].clicks;
+  }
+}
+
+
+
+
 function startTheSurvey() {
   surveyStatus = 'start';
   selectionCount = 1;
@@ -203,7 +226,9 @@ function startTheSurvey() {
 //   //continue the survey
 // }
 
-function displaySurveyReults() {
+function displaySurveyResults() {
+  readStorage();
+  // updateArraysForChart();
   drawResultsChart();
 }
 
