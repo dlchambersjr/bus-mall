@@ -9,11 +9,18 @@
 ### 08.21.2018
 - As the Marketing Research Team, we want the data to be displayed in a chart, so it will be more visually appealing and easy to interpret.
 
+### 08.22.2018
+ - As the Marketing Research Team, we want the data to be saved as the survey is taking place, so that users can return to the survey continue the survey or view the results.
+ - As the Marketing Research Team, we want to incrementally store all of the data, so we can see a total picture of all results.
+
 ## Focus Group Participant
 ### 08.20.2018
 - As a focus group participant, I want clear instructions, so I understand what is expected of me.
 - As a focus group participant, I want to see the results of my effort, so I can feel good about my participation.
 - As a focus group participant, I want an easy to use interface that is appealing to the activity I am participating in, so I won’t be confused on how to interact with the process.
+
+### 08.22.2018
+ - As a focus group participant, I want the survey to remember my progress, so I can leave the survey and return to the place I left off.
 
 ## Developer
 ### 08.20.2018
@@ -29,3 +36,8 @@
 - As the developer, I need to create arrays to send the legend, axis, and data so the charting process can funtion correctly.
 - As the developer, I need to define the chart parameters, so it will render with the correct information on the screen.
 - As the developer, I need to choose fonts and colors that enahve the visual appearance of data, so it will be easier to read and understand.
+
+### 08.22.2018
+ - As the developer, I need to check for previous use, so I know whether the user has previously attempted the survey.
+ - As the developer, I need to determine if the user is returning to the survey, so I have them continue in the location they left off.
+ - As the developer, I need to create an retake option, so the user can attempt the survey again if they have already completed it once,

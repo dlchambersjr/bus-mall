@@ -11,11 +11,11 @@ CF 201 Week 3
  
  ## Tuesday - August 21st, 2018 - chart.js
  - Updated user_stories.md with new requirments
- - created a function to generate randon colors for the bars in the results graph
- - created necesssary arrays for the results graph
+ - Created a function to generate randon colors for the bars in the results graph
+ - Created necesssary arrays for the results graph
  - Added a bar chart to represent the results of the table
- - worked on making the code more DRY
+ - Aorked on making the code more DRY
 
  ## Wednesday - August 22nd, 2018 - localStorage
- - implemented code review suggestions.
- 
+ - Implemented code review suggestions.
+ - Updated user_stories.md with new parameters

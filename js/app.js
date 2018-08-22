@@ -5,46 +5,70 @@ var MAX_SELECTIONS = 25;
 var MAX_PRODUCTS_TO_DISPLAY = 3;
 var currentProductsToDisplay = [];
 var previousProductsDisplayed = [];
-
-// Create required number of image elements
 var imageEl = [];
-
-for (var numberOfProducts = 0; numberOfProducts < MAX_PRODUCTS_TO_DISPLAY; numberOfProducts++) {
-  var IdNumber = numberOfProducts + 1;
-  imageEl[numberOfProducts] = document.getElementById(`choice-${IdNumber}`);
-}
+var allProducts = [];
+var SURVEY_STATUS = 'surveyStatus';
+var SELECTION_NUMBER = 'selectionCount';
+var ALL_PRODUCTS = 'allProducts';
+var selectionCount;
 
 //Create the product list
 var productList = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
-var allProducts = [];
+// Evaluate the status of the user and survey
+var surveyStatus = localStorage.getItem(SURVEY_STATUS);
 
+console.log(`The survey status is: ${surveyStatus}`);
+
+if (surveyStatus === null) {
+  startTheSurvey();
+} else if (surveyStatus === 'started') {
+  // continiue the survey where they left off
+} else {
+  displaySurveyReults();
+}
+
+// Create required number of image elements
+function createImageElIds() {
+  for (var numberOfProducts = 0; numberOfProducts < MAX_PRODUCTS_TO_DISPLAY; numberOfProducts++) {
+    var IdNumber = numberOfProducts + 1;
+    imageEl[numberOfProducts] = document.getElementById(`choice-${IdNumber}`);
+  }
+}
+
+// Define the Product constructor
 function Product(name) {
   this.name = name;
   this.path = `./img/${name}.jpg`;
   this.views = 0;
   this.clicks = 0;
-  allProducts.push(this);
+
+  // allProducts.push(this);
 }
 
-productList.forEach(function (name) {
-  new Product(name);
-});
+// Create an Object for each product and place in an Array
+function createProducts() {
+  productList.forEach(function (name) {
+    var newProduct = new Product(name);
+    allProducts.push(newProduct);
+  });
+}
+
+console.table(allProducts);
+
 
 // Choose random products and add one to their view count
 // There can be no duplicate items in the currentProductDisplay or the previousProductsDisplayed
-// 'I'm assuming it will it will choose a random product to displyay'
 function chooseRandomProducts() {
   // Vinicio - consider changing the name numberofProducts
   for (var numberOfProducts = 0; numberOfProducts < MAX_PRODUCTS_TO_DISPLAY; numberOfProducts++) {
-    // Generate a random number (smell)
+
     var randomProductNumber = Math.floor(allProducts.length * Math.random());
 
-    // Making sure we have no duplicates
     while (currentProductsToDisplay.includes(randomProductNumber) || previousProductsDisplayed.includes(randomProductNumber)) {
       randomProductNumber = Math.floor(allProducts.length * Math.random());
     }
-    // Adding our selected pictures into the main array
+
     currentProductsToDisplay.push(randomProductNumber);
     allProducts[randomProductNumber].views++;
   }
@@ -73,15 +97,14 @@ function toggleListenerOff() {
 }
 
 //Process the results when a picture is clicked
-var selectionCount = 1;
+
 
 function processClicks(event) {
-  // event.preventDefault(); //prevent reload
 
   var title = event.target.title;
-  // Vinicio - consider changing number to index
-  var productNumber = productList.indexOf(title);
-  allProducts[productNumber].clicks++;
+
+  var productIndex = productList.indexOf(title);
+  allProducts[productIndex].clicks++;
 
   // Check for end of survey
   if (selectionCount < MAX_SELECTIONS) {
@@ -91,10 +114,12 @@ function processClicks(event) {
     previousProductsDisplayed = currentProductsToDisplay.slice();
     currentProductsToDisplay.length = 0;
 
+    writeStorage('start', selectionCount, allProducts);
     chooseRandomProducts(event);
     updateHtmlImgTags();
   }
   else {
+    writeStorage('finshed', selectionCount, allProducts);
     alert('You have completed the survey.\n\nplease click "OK" to see the results');
     toggleListenerOff();
     updateArraysForChart();
@@ -156,7 +181,36 @@ function drawResultsChart() {
   });
 }
 
-// Start the Survey
-chooseRandomProducts();
-updateHtmlImgTags();
-toggleListenerOn();
+// Write data to local storage
+function writeStorage(surveyStatus, selectionCount) {
+  localStorage.setItem(SURVEY_STATUS, surveyStatus);
+  localStorage.setItem(SELECTION_NUMBER, selectionCount);
+  localStorage.setItem(ALL_PRODUCTS, JSON.stringify(allProducts));
+}
+
+function startTheSurvey() {
+  surveyStatus = 'start';
+  selectionCount = 1;
+  writeStorage(surveyStatus, selectionCount);
+  createImageElIds();
+  createProducts();
+  chooseRandomProducts();
+  updateHtmlImgTags();
+  toggleListenerOn();
+}
+
+// function continueTheSurvey() {
+//   //continue the survey
+// }
+
+function displaySurveyReults() {
+  drawResultsChart();
+}
+
+
+
+
+// // Start the Survey
+// chooseRandomProducts();
+// updateHtmlImgTags();
+// toggleListenerOn();
