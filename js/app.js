@@ -9,8 +9,8 @@ var
 var currentProductsDisplayed = [];
 var previousProductsDisplayed = [];
 
-var maxChoices = 25;
-var resultsChart;
+var maxChoices = 5;
+// var resultsChart;
 
 //Create the product list
 
@@ -105,16 +105,16 @@ function processClicks(event) {
   }
 }
 
-function renderResults() {
-  var bodyEl = document.getElementById('body');
-  var ulEl = document.createElement('ul');
-  for (var productId = 0; productId < allProducts.length; productId++) {
-    var liEl = document.createElement('li');
-    liEl.textContent = `${allProducts[productId].clicks} for the ${allProducts[productId].name}`;
-    ulEl.appendChild(liEl);
-  }
-  bodyEl.appendChild(ulEl);
-}
+// function renderResults() {
+//   var bodyEl = document.getElementById('body');
+//   var ulEl = document.createElement('ul');
+//   for (var productId = 0; productId < allProducts.length; productId++) {
+//     var liEl = document.createElement('li');
+//     liEl.textContent = `${allProducts[productId].clicks} for the ${allProducts[productId].name}`;
+//     ulEl.appendChild(liEl);
+//   }
+//   bodyEl.appendChild(ulEl);
+// }
 
 // Create the arrays to send to the chart
 var productName = [];
@@ -140,37 +140,38 @@ function updateArraysForChart() {
 
 // // Chart rendered with chartData.js
 
-var chartData = {
-  label: productName,
-  datasets: [{
-    data: productClicks,
-    // backgoundColor: dataColors,
-    // hoverBackgroundColors: dataColors
-  }]
-};
+// var resultsChartData = {
+//   labels: productList,
+//   datasets: [{
+//     label: 'Votes',
+//     data: productClicks
+//   }]
+// };
 
 function drawResultsChart() {
   var ctx = document.getElementById('product-results-chart').getContext('2d');
-  resultsChart = new Chart(ctx, {
+  var resultsChart = new Chart(ctx, {
     type: 'bar',
-    data: chartData,
-    options: {
-      responsive: false,
-      animation: {
-        duration: 1000,
-        // easing: 'easeOutBounce'
-      }
-    },
-    scales: {
-      yAxes: [{
-        ticks: {
-          max: 10,
-          min: 0,
-          stepSize: 1.0
-        }
+    data: {
+      labels: productList,
+      datasets: [{
+        label: 'Votes',
+        data: productClicks,
+        backgroundColor: dataColors,
+        borderColor: 'black',
+        borderWidth: 1
+        // hoverBorderColor: 'red',
+        // hoverBorderWidth: '2px'
       }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
     }
   });
-  // chartDrawn = true;
 }
-
