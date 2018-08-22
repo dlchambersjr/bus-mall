@@ -13,7 +13,3 @@ CF 201 Week 3
  - Updated user_stories.md with new requirments
  - Added a bar chart to represent the results of the table
  - worked on making the code more DRY
-
- 
-
- 
