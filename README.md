@@ -15,7 +15,3 @@ CF 201 Week 3
  - created necesssary arrays for the results graph
  - Added a bar chart to represent the results of the table
  - worked on making the code more DRY
-
- 
-
- 
