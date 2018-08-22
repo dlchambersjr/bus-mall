@@ -102,12 +102,6 @@ var productName = [];
 var productClicks = [];
 var dataColors = [];
 
-(function populateColors() {
-  for (var numberOfProducts = 0; numberOfProducts < allProducts.length; numberOfProducts++) {
-    dataColors[numberOfProducts] = (`#${Math.floor(Math.random() * 16777215).toString(16)} `);
-  }
-})();
-
 function updateArraysForChart() {
   for (var listOfProducts = 0; listOfProducts < allProducts.length; listOfProducts++) {
     productName[listOfProducts] = allProducts[listOfProducts].name;
@@ -115,6 +109,14 @@ function updateArraysForChart() {
   }
 }
 
+// Generate random colors for the bars in graph
+(function populateColors() {
+  for (var numberOfProducts = 0; numberOfProducts < allProducts.length; numberOfProducts++) {
+    dataColors[numberOfProducts] = (`#${Math.floor(Math.random() * 16777215).toString(16)} `);
+  }
+})();
+
+// Render the chart
 function drawResultsChart() {
   var ctx = document.getElementById('product-results-chart').getContext('2d');
   var resultsChart = new Chart(ctx, { // eslint-disable-line
