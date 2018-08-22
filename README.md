@@ -11,5 +11,9 @@ CF 201 Week 3
  
  ## Tuesday - August 21st, 2018 - chart.js
  - Updated user_stories.md with new requirments
- - Add a bar chart to represent the results of the table
+ - Added a bar chart to represent the results of the table
+ - worked on making the code more DRY
+
+ 
+
  

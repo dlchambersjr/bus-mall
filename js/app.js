@@ -2,17 +2,17 @@
 
 // GLobal Variables
 var
-  maxChoices = 25,
-  totalProductsToChoose = 3,
-  currentProductsDisplayed = [],
+  maxSelections = 25,
+  maxProductsToDisplay = 3,
+  currentProductsToDisplay = [],
   previousProductsDisplayed = [];
 
 // Create required number of image elements
 var imageEl = [];
 
-for (var numberOfImages = 0; numberOfImages < totalProductsToChoose; numberOfImages++) {
-  var IdNumber = numberOfImages + 1;
-  imageEl[numberOfImages] = document.getElementById(`choice-${IdNumber}`);
+for (var numberOfProducts = 0; numberOfProducts < maxProductsToDisplay; numberOfProducts++) {
+  var IdNumber = numberOfProducts + 1;
+  imageEl[numberOfProducts] = document.getElementById(`choice-${IdNumber}`);
 }
 
 //Create the product list
@@ -28,69 +28,69 @@ function Product(name) {
   allProducts.push(this);
 }
 
-productList.forEach(function (product) {
-  new Product(product);
+productList.forEach(function (name) {
+  new Product(name);
 });
 
 // Choose random products and add one to their view count
 // There can be no duplicate items in the currentProductDisplay or the previousProductsDisplayed
 function chooseRandomProducts() {
 
-  for (var numberOfProducts = 0; numberOfProducts < totalProductsToChoose; numberOfProducts++) {
+  for (var numberOfProducts = 0; numberOfProducts < maxProductsToDisplay; numberOfProducts++) {
     var randomProductNumber = Math.floor(allProducts.length * Math.random());
 
-    while (currentProductsDisplayed.includes(randomProductNumber) | previousProductsDisplayed.includes(randomProductNumber)) {
+    while (currentProductsToDisplay.includes(randomProductNumber) | previousProductsDisplayed.includes(randomProductNumber)) {
       randomProductNumber = Math.floor(allProducts.length * Math.random());
     }
 
-    currentProductsDisplayed.push(randomProductNumber);
+    currentProductsToDisplay.push(randomProductNumber);
     allProducts[randomProductNumber].views++;
   }
 }
 
 // Update the HTML <img> tags with the prodcuts to be shown.
 function updateHtmlImgTags() {
-  for (var numberOfImages = 0; numberOfImages < totalProductsToChoose; numberOfImages++) {
-    imageEl[numberOfImages].src = allProducts[currentProductsDisplayed[numberOfImages]].path;
-    imageEl[numberOfImages].title = allProducts[currentProductsDisplayed[numberOfImages]].name;
-    imageEl[numberOfImages].alt = allProducts[currentProductsDisplayed[numberOfImages]].name;
+  for (var numberOfImages = 0; numberOfImages < maxProductsToDisplay; numberOfImages++) {
+    imageEl[numberOfImages].src = allProducts[currentProductsToDisplay[numberOfImages]].path;
+    imageEl[numberOfImages].title = allProducts[currentProductsToDisplay[numberOfImages]].name;
+    imageEl[numberOfImages].alt = allProducts[currentProductsToDisplay[numberOfImages]].name;
   }
 }
 
 //Add or remove eventListeners
 function toggleListenerOn() {
-  for (var numberOfImages = 0; numberOfImages < totalProductsToChoose; numberOfImages++) {
+  for (var numberOfImages = 0; numberOfImages < maxProductsToDisplay; numberOfImages++) {
     imageEl[numberOfImages].addEventListener('click', processClicks);
   }
 }
 
 function toggleListenerOff() {
-  for (var numberOfImages = 0; numberOfImages < totalProductsToChoose; numberOfImages++) {
+  for (var numberOfImages = 0; numberOfImages < maxProductsToDisplay; numberOfImages++) {
     imageEl[numberOfImages].removeEventListener('click', processClicks);
   }
 }
 
 //Process the results when a picture is clicked
-var testLength = 1;
+var selectionCount = 1;
 
 function processClicks(event) {
   event.preventDefault(); //prevent reload
 
   var title = event.target.title;
-  var pos = productList.indexOf(title);
-  allProducts[pos].clicks++;
+  var productNumber = productList.indexOf(title);
+  allProducts[productNumber].clicks++;
 
   // Check for end of survey
-  if (testLength < maxChoices) {
-    testLength++;
+  if (selectionCount < maxSelections) {
+    selectionCount++;
     previousProductsDisplayed.length = 0;
-    previousProductsDisplayed = currentProductsDisplayed.slice();
-    currentProductsDisplayed.length = 0;
+    previousProductsDisplayed = currentProductsToDisplay.slice();
+    currentProductsToDisplay.length = 0;
     chooseRandomProducts(event);
     updateHtmlImgTags();
   }
   else {
-    alert('All Done');
+    alert('You have completed the survey.\n\nplease click "OK" to see the results');
     toggleListenerOff();
     updateArraysForChart();
     drawResultsChart();
