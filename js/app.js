@@ -3,7 +3,7 @@
 // GLobal Variables
 var MAX_SELECTIONS = 25;
 var MAX_PRODUCTS_TO_DISPLAY = 3;
-var currentProductDisplay = [];
+var currentProductsToDisplay = [];
 var previousProductsDisplayed = [];
 
 // Create required number of image elements
@@ -11,7 +11,7 @@ var imageEl = [];
 
 for (var numberOfProducts = 0; numberOfProducts < MAX_PRODUCTS_TO_DISPLAY; numberOfProducts++) {
   var IdNumber = numberOfProducts + 1;
-  imageEl[numberOfProducts ] = document.getElementById(`choice-${IdNumber}`);
+  imageEl[numberOfProducts] = document.getElementById(`choice-${IdNumber}`);
 }
 
 //Create the product list
