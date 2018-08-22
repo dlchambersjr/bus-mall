@@ -1,18 +1,17 @@
 'use strict';
 
 // GLobal Variables
-var
-  maxSelections = 25,
-  maxProductsToDisplay = 3,
-  currentProductsToDisplay = [],
-  previousProductsDisplayed = [];
+var MAX_SELECTIONS = 25;
+var MAX_PRODUCTS_TO_DISPLAY = 3;
+var currentProductDisplay = [];
+var previousProductsDisplayed = [];
 
 // Create required number of image elements
 var imageEl = [];
 
-for (var numberOfProducts = 0; numberOfProducts < maxProductsToDisplay; numberOfProducts++) {
+for (var numberOfProducts = 0; numberOfProducts < MAX_PRODUCTS_TO_DISPLAY; numberOfProducts++) {
   var IdNumber = numberOfProducts + 1;
-  imageEl[numberOfProducts] = document.getElementById(`choice-${IdNumber}`);
+  imageEl[numberOfProducts ] = document.getElementById(`choice-${IdNumber}`);
 }
 
 //Create the product list
@@ -34,15 +33,18 @@ productList.forEach(function (name) {
 
 // Choose random products and add one to their view count
 // There can be no duplicate items in the currentProductDisplay or the previousProductsDisplayed
+// 'I'm assuming it will it will choose a random product to displyay'
 function chooseRandomProducts() {
-
-  for (var numberOfProducts = 0; numberOfProducts < maxProductsToDisplay; numberOfProducts++) {
+  // Vinicio - consider changing the name numberofProducts
+  for (var numberOfProducts = 0; numberOfProducts < MAX_PRODUCTS_TO_DISPLAY; numberOfProducts++) {
+    // Generate a random number (smell)
     var randomProductNumber = Math.floor(allProducts.length * Math.random());
 
-    while (currentProductsToDisplay.includes(randomProductNumber) | previousProductsDisplayed.includes(randomProductNumber)) {
+    // Making sure we have no duplicates
+    while (currentProductsToDisplay.includes(randomProductNumber) || previousProductsDisplayed.includes(randomProductNumber)) {
       randomProductNumber = Math.floor(allProducts.length * Math.random());
     }
-
+    // Adding our selected pictures into the main array
     currentProductsToDisplay.push(randomProductNumber);
     allProducts[randomProductNumber].views++;
   }
@@ -50,7 +52,7 @@ function chooseRandomProducts() {
 
 // Update the HTML <img> tags with the prodcuts to be shown.
 function updateHtmlImgTags() {
-  for (var numberOfImages = 0; numberOfImages < maxProductsToDisplay; numberOfImages++) {
+  for (var numberOfImages = 0; numberOfImages < MAX_PRODUCTS_TO_DISPLAY; numberOfImages++) {
     imageEl[numberOfImages].src = allProducts[currentProductsToDisplay[numberOfImages]].path;
     imageEl[numberOfImages].title = allProducts[currentProductsToDisplay[numberOfImages]].name;
     imageEl[numberOfImages].alt = allProducts[currentProductsToDisplay[numberOfImages]].name;
@@ -59,13 +61,13 @@ function updateHtmlImgTags() {
 
 //Add or remove eventListeners
 function toggleListenerOn() {
-  for (var numberOfImages = 0; numberOfImages < maxProductsToDisplay; numberOfImages++) {
+  for (var numberOfImages = 0; numberOfImages < MAX_PRODUCTS_TO_DISPLAY; numberOfImages++) {
     imageEl[numberOfImages].addEventListener('click', processClicks);
   }
 }
 
 function toggleListenerOff() {
-  for (var numberOfImages = 0; numberOfImages < maxProductsToDisplay; numberOfImages++) {
+  for (var numberOfImages = 0; numberOfImages < MAX_PRODUCTS_TO_DISPLAY; numberOfImages++) {
     imageEl[numberOfImages].removeEventListener('click', processClicks);
   }
 }
@@ -74,18 +76,21 @@ function toggleListenerOff() {
 var selectionCount = 1;
 
 function processClicks(event) {
-  event.preventDefault(); //prevent reload
+  // event.preventDefault(); //prevent reload
 
   var title = event.target.title;
+  // Vinicio - consider changing number to index
   var productNumber = productList.indexOf(title);
   allProducts[productNumber].clicks++;
 
   // Check for end of survey
-  if (selectionCount < maxSelections) {
+  if (selectionCount < MAX_SELECTIONS) {
     selectionCount++;
+
     previousProductsDisplayed.length = 0;
     previousProductsDisplayed = currentProductsToDisplay.slice();
     currentProductsToDisplay.length = 0;
+
     chooseRandomProducts(event);
     updateHtmlImgTags();
   }
