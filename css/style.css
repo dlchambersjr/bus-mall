@@ -1,18 +1,59 @@
+/* Google Font - Faster One */
+@import url('https://fonts.googleapis.com/css?family=Faster+One');
 
+/* font-family: 'Faster One', cursive; */
 
+body {
+    width: 960px;
+    margin: 0px auto;
+   text-align: center;
+}
 
+header h1 {
+    font-family: 'Faster One', cursive;
+    font-size: 75px;
+}
+
+main p {
+    font-size: 20px;
+}
 
 main ul {
-    list-style: none
+    list-style: none;
+    text-align: center;
 }
 
 main li {
     display: inline-block;
-    margin: 25px;
+    margin: 0px 50px 0px 0px;
 }
 
-main img {
+.pic {
     width: 200px;
     height: 200px;
     object-fit: scale-down;
+    border: 1px solid black;
+    border-radius: 25px;
 }
+
+.pic:hover {
+    border: 2px solid red;
+}
+
+canvas {
+    margin-top: 50px;
+}
+
+button {
+    margin: 25px;
+    padding: 15px;
+    background-color: rgb(79, 201, 238);
+    border: 2px solid black;
+    border-radius: 10px;
+    font-weight: bold;
+    }
+
+    button:hover {
+        background-color: rgb(63, 143, 63);
+        color: white;
+    }
