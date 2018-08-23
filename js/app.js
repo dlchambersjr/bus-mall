@@ -231,6 +231,7 @@ function continueTheSurvey() {
   readStorage();
   createImageElIds();
   toggleDisplayOn();
+  alert(`thanks for returning to finish the survey!\n\nYou have ${26 - selectionCount} selections remaining.`);
   chooseRandomProducts();
   updateHtmlImgTags();
   toggleListenerOn();
