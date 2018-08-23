@@ -27,7 +27,7 @@ console.log(`The survey status is: ${surveyStatus}`);
 if (surveyStatus === null) {
   startTheSurvey();
 } else if (surveyStatus === 'started') {
-  // continiue the survey where they left off
+  continueTheSurvey();
 } else {
   displaySurveyResults();
 }
@@ -118,7 +118,7 @@ function processClicks(event) {
     previousProductsDisplayed = currentProductsToDisplay.slice();
     currentProductsToDisplay.length = 0;
 
-    writeStorage('start', selectionCount, allProducts);
+    writeStorage('started', selectionCount, allProducts);
     chooseRandomProducts(event);
     updateHtmlImgTags();
   }
@@ -126,7 +126,6 @@ function processClicks(event) {
     writeStorage('finished', selectionCount, allProducts);
     alert('You have completed the survey.\n\nplease click "OK" to see the results');
     toggleListenerOff();
-    // updateArraysForChart();
     drawResultsChart();
   }
 }
@@ -194,10 +193,12 @@ function readStorage() {
   storedProducts = JSON.parse(localStorage.getItem(ALL_PRODUCTS));
 
   console.log(storedProducts);
+  console.log(`list of imported data`);
 
-  (function restoreProducts() {
-    allProducts = storedProducts;
-  })();
+
+  // (function restoreProducts() {
+  allProducts = storedProducts;
+  // })();
 
 }
 
@@ -208,11 +209,8 @@ function updateArraysForChart() {
   }
 }
 
-
-
-
 function startTheSurvey() {
-  surveyStatus = 'start';
+  surveyStatus = 'started';
   selectionCount = 1;
   writeStorage(surveyStatus, selectionCount);
   createImageElIds();
@@ -222,13 +220,16 @@ function startTheSurvey() {
   toggleListenerOn();
 }
 
-// function continueTheSurvey() {
-//   //continue the survey
-// }
+function continueTheSurvey() {
+  readStorage();
+  createImageElIds()
+  chooseRandomProducts();
+  updateHtmlImgTags();
+  toggleListenerOn();
+}
 
 function displaySurveyResults() {
   readStorage();
-  // updateArraysForChart();
   drawResultsChart();
 }
 
