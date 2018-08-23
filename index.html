@@ -13,7 +13,9 @@
 
 <body id="body">
     <header>
-
+        <h1>
+            Bus &nbsp&nbsp&nbsp&nbsp Mall
+        </h1>
     </header>
 
     <nav>
@@ -21,22 +23,29 @@
     </nav>
 
     <main>
+        <p>
+            Thank you for participating in our survey. We will show you 25 sets of three products. Please click on the product you would
+            most purchase. After you select a product another group of three will appear.<br/><br/>The results
+            will be shown after you have finished selecting 25 times.
+        </p>
 
         <ul>
             <li>
-                <img id="choice-1">
+                <img class="pic" id="choice-1">
             </li>
 
             <li>
-                <img id="choice-2">
+                <img class="pic" id="choice-2">
             </li>
 
             <li>
-                <img id="choice-3">
+                <img class="pic" id="choice-3">
             </li>
-
         </ul>
 
+        <img id="thank-you" src="./img/thank-you.jpg" alt="Thank You">
+        <br/>
+        <button class="button" id="button">RETAKE THE SURVEY</button>
     </main>
 
     <canvas id="product-results-chart" width="900px" height="400px"></canvas>

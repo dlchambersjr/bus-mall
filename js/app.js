@@ -3,26 +3,23 @@
 // GLobal Variables
 var MAX_SELECTIONS = 25;
 var MAX_PRODUCTS_TO_DISPLAY = 3;
+var SURVEY_STATUS = 'surveyStatus';
+var SELECTION_NUMBER = 'selectionCount';
+var ALL_PRODUCTS = 'allProducts';
 var currentProductsToDisplay = [];
 var previousProductsDisplayed = [];
 var imageEl = [];
 var allProducts = [];
-var SURVEY_STATUS = 'surveyStatus';
-var SELECTION_NUMBER = 'selectionCount';
-var ALL_PRODUCTS = 'allProducts';
-var selectionCount;
-var storedProducts;
 var productName = [];
 var productClicks = [];
 var dataColors = [];
+var selectionCount;
 
 //Create the product list
 var productList = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
 // Evaluate the status of the user and survey
 var surveyStatus = localStorage.getItem(SURVEY_STATUS);
-
-console.log(`The survey status is: ${surveyStatus}`);
 
 if (surveyStatus === null) {
   startTheSurvey();
@@ -46,8 +43,6 @@ function Product(name) {
   this.path = `./img/${name}.jpg`;
   this.views = 0;
   this.clicks = 0;
-
-  // allProducts.push(this);
 }
 
 // Create an Object for each product and place in an Array
@@ -58,19 +53,16 @@ function createProducts() {
   });
 }
 
-console.table(allProducts);
-
-
 // Choose random products and add one to their view count
 // There can be no duplicate items in the currentProductDisplay or the previousProductsDisplayed
 function chooseRandomProducts() {
   // Vinicio - consider changing the name numberofProducts
   for (var numberOfProducts = 0; numberOfProducts < MAX_PRODUCTS_TO_DISPLAY; numberOfProducts++) {
 
-    var randomProductNumber = Math.floor(allProducts.length * Math.random());
+    var randomProductNumber = Math.floor(productList.length * Math.random());
 
     while (currentProductsToDisplay.includes(randomProductNumber) || previousProductsDisplayed.includes(randomProductNumber)) {
-      randomProductNumber = Math.floor(allProducts.length * Math.random());
+      randomProductNumber = Math.floor(productList.length * Math.random());
     }
 
     currentProductsToDisplay.push(randomProductNumber);
@@ -87,11 +79,29 @@ function updateHtmlImgTags() {
   }
 }
 
+// Toggle Display State
+function toggleDisplayOn() {
+  document.getElementById('button').style.display = 'none';
+  document.getElementById('thank-you').style.display = 'none';
+  document.getElementById('choice-1').style.display = 'inline-block';
+  document.getElementById('choice-2').style.display = 'inline-block';
+  document.getElementById('choice-3').style.display = 'inline-block';
+}
+
+function toggleDisplayOff() {
+  document.getElementById('button').style.display = 'initial';
+  document.getElementById('thank-you').style.display = 'initial';
+  document.getElementById('choice-1').style.display = 'none';
+  document.getElementById('choice-2').style.display = 'none';
+  document.getElementById('choice-3').style.display = 'none';
+}
+
 //Add or remove eventListeners
 function toggleListenerOn() {
   for (var numberOfImages = 0; numberOfImages < MAX_PRODUCTS_TO_DISPLAY; numberOfImages++) {
     imageEl[numberOfImages].addEventListener('click', processClicks);
   }
+
 }
 
 function toggleListenerOff() {
@@ -100,9 +110,16 @@ function toggleListenerOff() {
   }
 }
 
+function toggleButtonListenerOn() {
+  document.getElementById('button').addEventListener('click', processButtonClick);
+}
+
+function processButtonClick() {
+  document.getElementById('button').removeEventListener('click', processButtonClick);
+  startTheSurvey();
+}
+
 //Process the results when a picture is clicked
-
-
 function processClicks(event) {
 
   var title = event.target.title;
@@ -120,19 +137,16 @@ function processClicks(event) {
 
     writeStorage('started', selectionCount, allProducts);
     chooseRandomProducts(event);
-    updateHtmlImgTags();
+    updateHtmlImgTags('inline-block');
   }
   else {
     writeStorage('finished', selectionCount, allProducts);
-    alert('You have completed the survey.\n\nplease click "OK" to see the results');
     toggleListenerOff();
+    toggleDisplayOff();
+    toggleButtonListenerOn();
     drawResultsChart();
   }
 }
-
-// Create the arrays to send to the chart
-
-
 
 // Generate random colors for the bars in graph
 function populateColors() {
@@ -190,16 +204,7 @@ function writeStorage(surveyStatus, selectionCount) {
 function readStorage() {
   surveyStatus = localStorage.getItem(SURVEY_STATUS);
   selectionCount = JSON.parse(localStorage.getItem(SELECTION_NUMBER));
-  storedProducts = JSON.parse(localStorage.getItem(ALL_PRODUCTS));
-
-  console.log(storedProducts);
-  console.log(`list of imported data`);
-
-
-  // (function restoreProducts() {
-  allProducts = storedProducts;
-  // })();
-
+  allProducts = JSON.parse(localStorage.getItem(ALL_PRODUCTS));
 }
 
 function updateArraysForChart() {
@@ -214,7 +219,9 @@ function startTheSurvey() {
   selectionCount = 1;
   writeStorage(surveyStatus, selectionCount);
   createImageElIds();
+
   createProducts();
+  toggleDisplayOn('inline-block', 'none');
   chooseRandomProducts();
   updateHtmlImgTags();
   toggleListenerOn();
@@ -222,7 +229,8 @@ function startTheSurvey() {
 
 function continueTheSurvey() {
   readStorage();
-  createImageElIds()
+  createImageElIds();
+  toggleDisplayOn();
   chooseRandomProducts();
   updateHtmlImgTags();
   toggleListenerOn();
@@ -230,13 +238,8 @@ function continueTheSurvey() {
 
 function displaySurveyResults() {
   readStorage();
+  toggleDisplayOff();
+  toggleButtonListenerOn();
   drawResultsChart();
+
 }
-
-
-
-
-// // Start the Survey
-// chooseRandomProducts();
-// updateHtmlImgTags();
-// toggleListenerOn();
